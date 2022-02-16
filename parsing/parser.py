@@ -40,10 +40,14 @@ async def parsing_films():
         json.dump(films_info, file, indent=4, ensure_ascii=False)
 
 
-async def search_film(search: str) -> dict|bool:
+async def search_film(search: str) -> list|bool:
     with open("parsing/films.json", "r", encoding="utf-8") as file:
         films = json.load(file)
+        answer = []
         for film in films:
-            if film["Search title"] == search:
-                return film
-        return False
+            if search in film["Search title"]:
+                answer.append(film)
+        if len(answer) != 0:
+            return answer
+        else:
+            return False
